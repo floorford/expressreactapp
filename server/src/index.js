@@ -1,12 +1,10 @@
 // root file for application on the server
 
 // boilerplate code to listen on 3000 and create a small express server for that port
-//NB: using common JS module syntax (require)
-const express = require("express");
-const React = require("react");
-const renderToString = require("react-dom/server").renderToString;
-
-const Home = require("./client/components/Home").default;
+import express from "express";
+import React from "react";
+import { renderToString } from "react-dom/server";
+import Home from "./client/components/Home";
 
 const app = express();
 
