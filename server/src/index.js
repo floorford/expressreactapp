@@ -2,9 +2,7 @@
 
 // boilerplate code to listen on 3000 and create a small express server for that port
 import express from "express";
-import React from "react";
-import { renderToString } from "react-dom/server";
-import Home from "./client/components/Home";
+import renderer from "./helpers/renderer";
 
 const app = express();
 
@@ -13,23 +11,10 @@ app.use(express.static("public"));
 
 // Route handler to listen to the root route of our application
 // if anyone make a GET request to root, run this function
-app.get("/", (req, res) => {
-  // rendering home to component as a string to pass to user's browser
-  const content = renderToString(<Home />);
-
-  // tell browser it needs to download the bundle.js file inside the public directory,
-  // whilst displaying the initial content
-  // public is the first place the server will look hence why we haven't had to add anymore directories to the src
-  const html = `
-    <html>
-        <head></head>
-        <body>
-            <div id="root">${content}</div>
-            <script src="bundle.js"></script>
-        </body>
-    </html>`;
-
-  res.send(html);
+// * tells express to accept all routes and just pass on to react router
+app.get("*", (req, res) => {
+  // req (request object) contains the path the user is trying to access, so need to pass to StaticRouter
+  res.send(renderer(req));
 });
 
 app.listen(3000, () => {
