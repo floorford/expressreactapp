@@ -1,18 +1,20 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import Routes from "../client/Routes";
-//export single function which will render our app and return it as string
 
-export default req => {
+//export single function which will render our app and return it as string
+export default (req, store) => {
   // rendering home to component as a string to pass to user's browser
   const content = renderToString(
     // StaticRouter requires the context variable to work
-    // the current path it needs to consider if passed in in the index.js file
-    // request object
-    <StaticRouter location={req.path} context={{}}>
-      <Routes />
-    </StaticRouter>
+    // the current path it needs to consider if passed is in the index.js file request object
+    <Provider store={store}>
+      <StaticRouter location={req.path} context={{}}>
+        <Routes />
+      </StaticRouter>
+    </Provider>
   );
 
   // tell browser it needs to download the bundle.js file inside the public directory,
