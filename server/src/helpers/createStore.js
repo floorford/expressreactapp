@@ -6,6 +6,8 @@ import { createStore, applyMiddleware } from "redux";
 // handle async action creators
 import thunk from "redux-thunk";
 
+import reducers from "../client/reducers";
+
 // not importing Provider as the sole purpose is to create the redux store,
 // not use it inside the react app as well
 

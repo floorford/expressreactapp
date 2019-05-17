@@ -2,6 +2,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { renderRoutes } from "react-router-config";
 import Routes from "../client/Routes";
 
 //export single function which will render our app and return it as string
@@ -12,7 +13,7 @@ export default (req, store) => {
     // the current path it needs to consider if passed is in the index.js file request object
     <Provider store={store}>
       <StaticRouter location={req.path} context={{}}>
-        <Routes />
+        <div>{renderRoutes(Routes)}</div>
       </StaticRouter>
     </Provider>
   );
