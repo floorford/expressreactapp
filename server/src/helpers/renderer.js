@@ -3,6 +3,9 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
+
+// function that takes a string and escapes characters involved with setting up script attacks
+import serialize from "serialize-javascript";
 import Routes from "../client/Routes";
 
 //export single function which will render our app and return it as string
@@ -27,6 +30,11 @@ export default (req, store) => {
           <body>
               <div id="root">${content}</div>
               <script src="bundle.js"></script>
+              <script>
+                window.INITIAL_STATE = ${serialize(store.getState())}
+              </script>
           </body>
       </html>`;
 };
+
+// JSON stringify the store state otherwise get [Object object]

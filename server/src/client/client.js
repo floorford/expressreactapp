@@ -19,7 +19,11 @@ import { Provider } from "react-redux";
 
 import reducers from "./reducers";
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+const store = createStore(
+  reducers,
+  window.INITIAL_STATE,
+  applyMiddleware(thunk)
+);
 
 // rendering this react onto the same div the server side react was rendered to (called hydration)
 ReactDOM.hydrate(
