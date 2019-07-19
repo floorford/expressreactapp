@@ -3,6 +3,7 @@
 // boilerplate code to listen on 3000 and create a small express server for that port
 import "babel-polyfill"; // a module which polyfills helper functions babel assumes are loaded in
 import express from "express";
+import proxy from "express-http-proxy";
 import renderer from "./helpers/renderer";
 import createStore from "./helpers/createStore";
 import { matchRoutes } from "react-router-config";
@@ -10,6 +11,16 @@ import Routes from "./client/Routes";
 
 const app = express();
 
+// if api calls are made, proxy straight to herokuapp, ignore 2nd option (proxyReqOptDecorator) purely for tutorial
+app.use(
+  "/api",
+  proxy("http://react-ssr-api.herokuapp.com", {
+    proxyReqOptDecorator(opts) {
+      opts.headers["x-forwarded-host"] = "localhost:3000";
+      return opts;
+    }
+  })
+);
 // telling express to use the public directory as a freely accessable public directory
 app.use(express.static("public"));
 
@@ -17,7 +28,7 @@ app.use(express.static("public"));
 // if anyone makes a GET request to root, run this function
 // * tells express to accept all routes and just pass on to react router
 app.get("*", (req, res) => {
-  const store = createStore();
+  const store = createStore(req); // has the cookie the proxy needs
 
   // logic to initialise and load data into the store
   // the routes array, and the path the user is attempting to visit

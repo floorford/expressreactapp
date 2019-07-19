@@ -17,12 +17,20 @@ import thunk from "redux-thunk";
 // ties our store and react app together
 import { Provider } from "react-redux";
 
+import axios from "axios";
+
 import reducers from "./reducers";
+
+// our special instance of axios - will automatically prepend /api onto our requests from the browser!
+// how we intervene with the proxy!
+const axiosInstance = axios.create({
+  baseURL: "/api"
+});
 
 const store = createStore(
   reducers,
   window.INITIAL_STATE,
-  applyMiddleware(thunk)
+  applyMiddleware(thunk.withExtraArgument(axiosInstance))
 );
 
 // rendering this react onto the same div the server side react was rendered to (called hydration)
