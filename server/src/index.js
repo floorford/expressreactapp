@@ -17,6 +17,8 @@ app.use(
   proxy("http://react-ssr-api.herokuapp.com", {
     proxyReqOptDecorator(opts) {
       opts.headers["x-forwarded-host"] = "localhost:3000";
+      // tells google oauth process to tell it to redirect to localhost:3000 once request processed
+      // otherwise would return to herokuapp as that's where the api proxies through
       return opts;
     }
   })

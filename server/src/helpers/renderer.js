@@ -26,7 +26,9 @@ export default (req, store) => {
   // public is the first place the server will look hence why we haven't had to add anymore directories to the src
   return `
       <html>
-          <head></head>
+          <head>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+          </head>
           <body>
               <div id="root">${content}</div>
               <script>
