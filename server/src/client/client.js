@@ -41,5 +41,5 @@ ReactDOM.hydrate(
       <div>{renderRoutes(Routes)}</div>
     </BrowserRouter>
   </Provider>,
-  document.getElementById("root")
+  document.querySelector("#root")
 );
