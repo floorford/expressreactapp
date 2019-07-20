@@ -34,11 +34,20 @@ app.get("*", (req, res) => {
 
   // logic to initialise and load data into the store
   // the routes array, and the path the user is attempting to visit
-  // returns an array of components to be rendered, and the promises they're making to the API
-  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
-    // passing in store means all loadData function have reference to server side redux store
-    return route.loadData ? route.loadData(store) : null;
-  });
+  // returns an array of components to be rendered, and the promises they're making to the API OR NULL
+  const promises = matchRoutes(Routes, req.path)
+    .map(({ route }) => {
+      // passing in store means all loadData function have reference to server side redux store
+      return route.loadData ? route.loadData(store) : null;
+    })
+    .map(promise => {
+      // wrap each promise or NULL in a promise, so even if the inner promise is rejected the outer promise resolves
+      if (promise) {
+        return new Promise((resolve, reject) => {
+          promise.then(resolve).catch(resolve);
+        });
+      }
+    });
 
   // Promise.all only returns a single promise once it's been resolved therefore it's a good
   // way to test if the redux loop has returned with the fetchec data and therefore we can render the app
