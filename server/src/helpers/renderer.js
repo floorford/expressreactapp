@@ -9,13 +9,13 @@ import serialize from "serialize-javascript";
 import Routes from "../client/Routes";
 
 //export single function which will render our app and return it as string
-export default (req, store) => {
+export default (req, store, context) => {
   // rendering home to component as a string to pass to user's browser
   const content = renderToString(
     // StaticRouter requires the context variable to work
     // the current path it needs to consider if passed is in the index.js file request object
     <Provider store={store}>
-      <StaticRouter location={req.path} context={{}}>
+      <StaticRouter location={req.path} context={context}>
         <div>{renderRoutes(Routes)}</div>
       </StaticRouter>
     </Provider>

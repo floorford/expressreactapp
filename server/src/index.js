@@ -43,8 +43,16 @@ app.get("*", (req, res) => {
   // Promise.all only returns a single promise once it's been resolved therefore it's a good
   // way to test if the redux loop has returned with the fetchec data and therefore we can render the app
   Promise.all(promises).then(() => {
+    // context object (used for error handling)
+    const context = {};
+    // content.notFound only true if passes through NotFoundPage
+    const content = renderer(req, store, context);
+
+    if (context.notFound) {
+      res.status(404);
+    }
     // req (request object) contains the path the user is trying to access, so need to pass to StaticRouter
-    res.send(renderer(req, store));
+    res.send(content);
   });
 });
 
