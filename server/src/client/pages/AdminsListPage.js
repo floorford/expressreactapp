@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchAdmins } from "../actions";
+import requireAuth from "../components/hocs/requireAuth";
 
 // need to be logged in to see this view, get a 401 (unauthorised) if not
 class AdminsListPage extends Component {
@@ -32,6 +33,6 @@ export default {
   component: connect(
     mapStateToProps,
     { fetchAdmins }
-  )(AdminsListPage),
+  )(requireAuth(AdminsListPage)), // hoc is wrapping our admins list page (cos it requires auth to view)
   loadData: ({ dispatch }) => dispatch(fetchAdmins())
 };
