@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchUsers } from "../actions";
+import { Helmet } from "react-helmet";
 
 class UsersListPage extends Component {
   componentDidMount() {
@@ -13,9 +14,20 @@ class UsersListPage extends Component {
     });
   }
 
+  head() {
+    /* placing tags we want to be rendered into the Helmet library */
+    return (
+      <Helmet>
+        <title>{`${this.props.users.length} Users Loaded`}</title>
+        <meta property="og:title" content="Users App" />
+      </Helmet>
+    );
+  }
+
   render() {
     return (
       <div>
+        {this.head()}
         Here's a big list of users:
         <ul>{this.renderUsers()}</ul>
       </div>

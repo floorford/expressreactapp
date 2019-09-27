@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
+import { Helmet } from "react-helmet";
 
 // function that takes a string and escapes characters involved with setting up script attacks
 import serialize from "serialize-javascript";
@@ -21,12 +22,16 @@ export default (req, store, context) => {
     </Provider>
   );
 
+  const helmet = Helmet.renderStatic();
+  // ${helment.title.toString()} etc. is string interpolating the tags we set up in UsersListPage.js
   // tell browser it needs to download the bundle.js file inside the public directory,
   // whilst displaying the initial content
   // public is the first place the server will look hence why we haven't had to add anymore directories to the src
   return `
       <html>
           <head>
+            ${helmet.title.toString()}
+            ${helmet.meta.toString()}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
           </head>
           <body>
